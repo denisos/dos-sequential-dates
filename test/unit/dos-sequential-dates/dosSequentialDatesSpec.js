@@ -7,32 +7,27 @@ describe('', function() {
   dependencies = [];
 
   var hasModule = function(module) {
-  return dependencies.indexOf(module) >= 0;
+    return dependencies.indexOf(module) >= 0;
   };
 
   beforeEach(function() {
 
   // Get module
   module = angular.module('dosSequentialDates');
-  dependencies = module.requires;
+    dependencies = module.requires;
   });
 
   it('should load config module', function() {
-    expect(hasModule('dosSequentialDates.config')).to.be.ok;
+    expect(hasModule('dosSequentialDates.config')).toBe(true);
   });
 
-  
-
-  
   it('should load directives module', function() {
-    expect(hasModule('dosSequentialDates.directives')).to.be.ok;
+    expect(hasModule('dosSequentialDates.directives')).toBe(true);
   });
-  
 
-  
   it('should load services module', function() {
-    expect(hasModule('dosSequentialDates.services')).to.be.ok;
+    expect(hasModule('dosSequentialDates.services')).toBe(true);
   });
-  
+
 
 });
