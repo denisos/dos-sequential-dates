@@ -1,0 +1,30 @@
+{
+  "generator-angularjs-library": {
+    "props": {
+      "author": {
+        "name": "Denis OSullivan",
+        "email": "deniskos@hotmail.com"
+      },
+      "libraryName": {
+        "original": "dos sequential dates",
+        "camelized": "dosSequentialDates",
+        "dasherized": "dos-sequential-dates",
+        "slugified": "dos-sequential-dates",
+        "parts": [
+          "dos",
+          "sequential",
+          "dates"
+        ]
+      },
+      "includeModuleDirectives": true,
+      "includeModuleFilters": false,
+      "includeModuleServices": true,
+      "includeAngularModuleResource": false,
+      "includeAngularModuleCookies": false,
+      "includeAngularModuleSanitize": false,
+      "librarySrcDirectory": "src/dos-sequential-dates",
+      "libraryUnitTestDirectory": "test/unit/dos-sequential-dates",
+      "libraryUnitE2eDirectory": "test/e2e/dos-sequential-dates"
+    }
+  }
+}
