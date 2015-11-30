@@ -1,6 +1,8 @@
 # dos sequential dates
-2 attribute directives to check if a date is before or after another ngModel date. In case of error then a 'sequential' ngModel error is flagged. You can then decide how to handle the error.
+Two custom attribute directives to check if a date is before or after another ngModel date. In case of error then a 'sequential' ngModel error is flagged (i.e. $error.sequential). You can then decide how to handle this on your form.
 
+## Plunkr
+http://plnkr.co/edit/IV727ex9qp9t3rnsYZrD?p=preview
 
 ## Provides 2 directives:
 + dos-after-date this date should be after the dos-after-date ngModel
