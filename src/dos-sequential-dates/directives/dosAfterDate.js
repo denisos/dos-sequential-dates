@@ -10,45 +10,53 @@
  *   (which is defined as an ngModel elsewhere)
  *
  */
-'use strict';
-angular.module('dosSequentialDates.directives')
-.directive('dosAfterDate', ['SequentialDatesService', function(SequentialDatesService) {
-    return {
-        restrict: 'A',
-        require: 'ngModel',         // need access to ngModel to monitor it
-        link: function(scope, element, attrs, ngModelController) {
-            // is currentDate before attrs.dosAfterDate? if so flag as ok, else error
-            function handleIsAfter(currentDate) {
-                var isAfter =
-                    SequentialDatesService.isSequential(scope.$eval(attrs.dosAfterDate),
-                                                        currentDate);
-                ngModelController.$setValidity('sequential', isAfter);
-                return currentDate;
+(function(angular) {
+    'use strict';
+    angular
+        .module('dosSequentialDates.directives')
+        .directive('dosAfterDate', dosAfterDate);
+
+    dosAfterDate.$inject = ['SequentialDatesService'];
+
+    function dosAfterDate(SequentialDatesService) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',         // need access to ngModel to monitor it
+            link: function(scope, element, attrs, ngModelController) {
+                // is currentDate before attrs.dosAfterDate? if so flag as ok, else error
+                function handleIsAfter(currentDate) {
+                    var isAfter =
+                        SequentialDatesService.isSequential(scope.$eval(attrs.dosAfterDate),
+                                                            currentDate);
+                    ngModelController.$setValidity('sequential', isAfter);
+                    return currentDate;
+                }
+
+                // compares currentDate to the date in the other field which is
+                //  passed in as attrs.after-date
+                function validateAfterDate(currentDate) {
+                    if (!currentDate) {
+                        return;
+                    }
+                    return handleIsAfter(currentDate);
+                }
+
+                // push the fn onto the parsers and formatters angular pipeline
+                ngModelController.$parsers.push(validateAfterDate);
+                ngModelController.$formatters.push(validateAfterDate);
+
+                // watch for the other date changing and if it does, check if
+                //  this date is still valid or not
+                scope.$watch(attrs.dosAfterDate, function() {
+                    // only force the validation if the field is dirty or has a value
+                    //  in this way we don't flag as error totally new fields with no value
+                    //  but we do force a check even if this field is unchanged
+                    if (ngModelController.$dirty || ngModelController.$viewValue !== null ) {
+                        handleIsAfter(ngModelController.$viewValue);
+                    }
+                });
             }
+        };
+    }
 
-            // compares currentDate to the date in the other field which is
-            //  passed in as attrs.after-date
-            var validateAfterDate = function(currentDate) {
-                if (!currentDate) {
-                    return;
-                }
-                return handleIsAfter(currentDate);
-            };
-
-            // push the fn onto the parsers and formatters angular pipeline
-            ngModelController.$parsers.push(validateAfterDate);
-            ngModelController.$formatters.push(validateAfterDate);
-
-            // watch for the other date changing and if it does, check if
-            //  this date is still valid or not
-            scope.$watch(attrs.dosAfterDate, function() {
-                // only force the validation if the field is dirty or has a value
-                //  in this way we don't flag as error totally new fields with no value
-                //  but we do force a check even if this field is unchanged
-                if (ngModelController.$dirty || ngModelController.$viewValue !== null ) {
-                    handleIsAfter(ngModelController.$viewValue);
-                }
-            });
-        }
-    };
-}]);
+})(angular);
